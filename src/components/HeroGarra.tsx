@@ -186,7 +186,7 @@ function Scene() {
 
 export default function HeroGarra() {
   return (
-    <section className="relative h-screen w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+    <section className="relative h-screen w-full bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
       {/* Contenedor principal: dos columnas */}
       <div className="relative z-10 h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20">
         {/* Columna izquierda: Texto */}
@@ -223,7 +223,7 @@ export default function HeroGarra() {
 
         {/* Columna derecha: Modelo 3D */}
         <div className="flex-1 w-full md:w-1/2 h-full relative">
-          <div className="w-full h-full bg-gradient-to-b from-slate-900/50 via-slate-800/30 to-slate-900/50">
+          <div className="w-full h-full bg-linear-to-b from-slate-900/50 via-slate-800/30 to-slate-900/50">
             <Canvas
               camera={{ position: [0, 1, 5], fov: 50 }}
               gl={{ antialias: true, alpha: true }}

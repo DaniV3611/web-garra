@@ -282,7 +282,7 @@ function PhasePanel({
       className="flex flex-col items-center"
     >
       {/* Contenedor del modelo 3D */}
-      <div className="relative w-full aspect-square bg-gradient-to-b from-slate-900/80 via-slate-800/60 to-slate-900/80 rounded-lg border border-cyan-500/30 overflow-hidden mb-4">
+      <div className="relative w-full aspect-square bg-linear-to-b from-slate-900/80 via-slate-800/60 to-slate-900/80 rounded-lg border border-cyan-500/30 overflow-hidden mb-4">
         {/* Grid de fondo con efecto de brillo */}
         <div
           className="absolute inset-0 opacity-20"
@@ -295,7 +295,7 @@ function PhasePanel({
           }}
         />
         {/* Brillo desde abajo */}
-        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-cyan-500/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-linear-to-t from-cyan-500/30 to-transparent" />
 
         {/* Canvas 3D */}
         <Canvas
@@ -351,7 +351,7 @@ export default function FuncionamientoGarra() {
   return (
     <section
       id="funcionamiento"
-      className="relative min-h-screen w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-20 px-6 md:px-12 lg:px-20"
+      className="relative min-h-screen w-full bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 py-20 px-6 md:px-12 lg:px-20"
     >
       {/* Título principal */}
       <div className="mb-12 md:mb-16 text-center">
@@ -392,7 +392,7 @@ export default function FuncionamientoGarra() {
       {/* Indicadores de parámetros técnicos */}
       <div className="relative mt-8">
         {/* Línea horizontal */}
-        <div className="relative h-1 bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent mb-8" />
+        <div className="relative h-1 bg-linear-to-r from-transparent via-cyan-500/50 to-transparent mb-8" />
 
         {/* Contenedor de indicadores */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -409,7 +409,7 @@ export default function FuncionamientoGarra() {
               <div className="relative mb-4">
                 <div className="w-4 h-4 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
                 {/* Línea vertical conectando con la línea horizontal */}
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full h-8 w-0.5 bg-gradient-to-t from-cyan-500/50 to-transparent" />
+                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full h-8 w-0.5 bg-linear-to-t from-cyan-500/50 to-transparent" />
               </div>
 
               {/* Información del parámetro */}

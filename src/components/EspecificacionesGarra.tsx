@@ -227,7 +227,7 @@ function SpecificationCard({
           }}
         >
           <div
-            className={`relative w-full h-full bg-gradient-to-br ${card.gradient} p-8 flex flex-col justify-between border-2 border-white/20 shadow-2xl`}
+            className={`relative w-full h-full bg-linear-to-br ${card.gradient} p-8 flex flex-col justify-between border-2 border-white/20 shadow-2xl`}
             style={{
               boxShadow: `0 0 40px ${card.glowColor}, inset 0 0 40px rgba(255, 255, 255, 0.1)`,
             }}
@@ -398,7 +398,7 @@ export default function EspecificacionesGarra() {
   return (
     <section
       id="especificaciones"
-      className="relative min-h-screen w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-20 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative min-h-screen w-full bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 py-20 px-6 md:px-12 lg:px-20 overflow-hidden"
     >
       {/* Efectos de fondo decorativos */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
