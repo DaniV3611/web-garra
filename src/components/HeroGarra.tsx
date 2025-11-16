@@ -1,16 +1,24 @@
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls, useGLTF, Environment, Center } from "@react-three/drei";
 import { motion } from "framer-motion";
 import * as THREE from "three";
 import { ErrorBoundary } from "./ErrorBoundary";
 
-function Model3D() {
+interface Model3DProps {
+  isUserInteracting: boolean;
+  setIsUserInteracting: (value: boolean) => void;
+}
+
+function Model3D({ isUserInteracting, setIsUserInteracting }: Model3DProps) {
   const { scene } = useGLTF("/models/garra.glb", true);
+  const { gl } = useThree();
   const boxRef = useRef<THREE.Box3>(new THREE.Box3());
   const sizeRef = useRef<THREE.Vector3>(new THREE.Vector3());
   const centerRef = useRef<THREE.Vector3>(new THREE.Vector3());
   const sceneRef = useRef<THREE.Group>(null);
+  const isDraggingRef = useRef(false);
+  const lastMousePositionRef = useRef({ x: 0, y: 0 });
 
   // Calcular bounding box y centrar el modelo
   useEffect(() => {
@@ -54,9 +62,54 @@ function Model3D() {
     scene.scale.set(scale, scale, scale);
   }, [scene]);
 
-  // Rotación continua solo del objeto 3D
+  // Manejar eventos de mouse para rotar el objeto
+  useEffect(() => {
+    const canvas = gl.domElement;
+
+    const handlePointerDown = (e: PointerEvent) => {
+      isDraggingRef.current = true;
+      lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
+      setIsUserInteracting(true);
+      canvas.style.cursor = "grabbing";
+    };
+
+    const handlePointerMove = (e: PointerEvent) => {
+      if (!isDraggingRef.current || !sceneRef.current) return;
+
+      const deltaX = e.clientX - lastMousePositionRef.current.x;
+      const deltaY = e.clientY - lastMousePositionRef.current.y;
+
+      // Rotar alrededor del eje Y (vertical) con movimiento horizontal del mouse
+      sceneRef.current.rotation.y += deltaX * 0.01;
+      // Rotar alrededor del eje X con movimiento vertical del mouse
+      sceneRef.current.rotation.x += deltaY * 0.01;
+
+      lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handlePointerUp = () => {
+      isDraggingRef.current = false;
+      setIsUserInteracting(false);
+      canvas.style.cursor = "grab";
+    };
+
+    canvas.addEventListener("pointerdown", handlePointerDown);
+    canvas.addEventListener("pointermove", handlePointerMove);
+    canvas.addEventListener("pointerup", handlePointerUp);
+    canvas.addEventListener("pointerleave", handlePointerUp);
+    canvas.style.cursor = "grab";
+
+    return () => {
+      canvas.removeEventListener("pointerdown", handlePointerDown);
+      canvas.removeEventListener("pointermove", handlePointerMove);
+      canvas.removeEventListener("pointerup", handlePointerUp);
+      canvas.removeEventListener("pointerleave", handlePointerUp);
+    };
+  }, [gl, setIsUserInteracting]);
+
+  // Rotación continua solo del objeto 3D (cuando no hay interacción del usuario)
   useFrame((state, delta) => {
-    if (sceneRef.current) {
+    if (sceneRef.current && !isUserInteracting && !isDraggingRef.current) {
       // Rotación continua alrededor del eje Z (horizontal, como una rueda)
       sceneRef.current.rotation.z += delta * 0.5; // Velocidad de rotación
     }
@@ -79,6 +132,8 @@ function CameraSetup() {
 }
 
 function Scene() {
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+
   return (
     <>
       {/* Configurar cámara */}
@@ -116,18 +171,15 @@ function Scene() {
           }
         >
           <Center>
-            <Model3D />
+            <Model3D
+              isUserInteracting={isUserInteracting}
+              setIsUserInteracting={setIsUserInteracting}
+            />
           </Center>
         </Suspense>
       </ErrorBoundary>
 
-      {/* OrbitControls deshabilitado para que solo rote el modelo */}
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        enableRotate={false}
-        autoRotate={false}
-      />
+      {/* OrbitControls deshabilitado - la rotación se maneja directamente en el objeto */}
     </>
   );
 }
@@ -166,42 +218,10 @@ export default function HeroGarra() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-white/80 text-base md:text-lg lg:text-xl mb-8 md:mb-12 text-left"
+            className="text-white/80 text-base md:text-lg lg:text-xl text-left"
           >
             Diseño de Ingeniería 3D | Autodesk Fusion 360
           </motion.p>
-
-          {/* Botón CTA */}
-          <motion.button
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => {
-              window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-            }}
-            className="px-6 md:px-8 py-3 md:py-4 border-2 border-cyan-400 text-white rounded-lg font-semibold text-base md:text-lg hover:bg-cyan-400/10 transition-all duration-300 flex items-center gap-2 group"
-          >
-            INICIAR EXPLORACIÓN
-            <motion.svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="text-cyan-400"
-            >
-              <path
-                d="M12 5V19M12 19L19 12M12 19L5 12"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </motion.svg>
-          </motion.button>
         </div>
 
         {/* Columna derecha: Modelo 3D */}
@@ -217,30 +237,40 @@ export default function HeroGarra() {
         </div>
       </div>
 
-      {/* Flecha indicadora abajo */}
+      {/* Botón CTA centrado en la parte inferior */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.7 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
       >
-        <motion.svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="text-cyan-400"
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => {
+            window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+          }}
+          className="px-6 md:px-8 py-3 md:py-4 border-2 border-cyan-400 text-white rounded-lg font-semibold text-base md:text-lg hover:bg-cyan-400/10 transition-all duration-300 flex items-center gap-2 group"
         >
-          <path
-            d="M12 5V19M12 19L19 12M12 19L5 12"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </motion.svg>
+          Ver más
+          <motion.svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            animate={{ y: [0, 5, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="text-cyan-400"
+          >
+            <path
+              d="M12 5V19M12 19L19 12M12 19L5 12"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </motion.svg>
+        </motion.button>
       </motion.div>
     </section>
   );
