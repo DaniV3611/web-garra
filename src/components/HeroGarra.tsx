@@ -187,9 +187,6 @@ function Scene() {
 export default function HeroGarra() {
   return (
     <section className="relative h-screen w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
-      {/* Borde derecho turquesa */}
-      <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-cyan-500 via-cyan-400 to-cyan-500 z-10" />
-
       {/* Contenedor principal: dos columnas */}
       <div className="relative z-10 h-full flex flex-col md:flex-row items-center justify-between px-6 md:px-12 lg:px-20">
         {/* Columna izquierda: Texto */}
