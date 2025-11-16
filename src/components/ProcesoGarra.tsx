@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 interface ProcessPhase {
   id: number;
@@ -78,22 +80,22 @@ const phases: ProcessPhase[] = [
 
 function PhaseCard({ phase, isActive }: { phase: ProcessPhase; isActive: boolean }) {
   return (
-    <motion.div
-      className="flex-shrink-0 w-full md:w-[80vw] lg:w-[70vw] h-[70vh] md:h-[80vh] px-4 md:px-8"
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{
-        opacity: isActive ? 1 : 0.6,
-        scale: isActive ? 1 : 0.95,
-      }}
-      transition={{ duration: 0.5 }}
+    <div
+      className="flex-shrink-0 w-screen h-full flex items-center justify-center px-4 md:px-8"
+      style={{ minWidth: "100vw" }}
     >
-      <div
-        className={`relative w-full h-full bg-gradient-to-br ${phase.gradient} rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl`}
+      <motion.div
+        className={`relative w-full max-w-6xl h-[80vh] bg-gradient-to-br ${phase.gradient} rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl`}
         style={{
           boxShadow: isActive
             ? `0 0 60px ${phase.glowColor}, inset 0 0 60px rgba(255, 255, 255, 0.1)`
             : `0 0 20px ${phase.glowColor}`,
         }}
+        animate={{
+          opacity: isActive ? 1 : 0.6,
+          scale: isActive ? 1 : 0.95,
+        }}
+        transition={{ duration: 0.3 }}
       >
         {/* Patrón de fondo */}
         <div
@@ -112,23 +114,20 @@ function PhaseCard({ phase, isActive }: { phase: ProcessPhase; isActive: boolean
           {/* Lado izquierdo: Imagen/Modelo 3D */}
           <div className="w-full md:w-1/2 h-1/2 md:h-full relative bg-black/20 backdrop-blur-sm">
             <div className="absolute inset-0 flex items-center justify-center">
-              {/* Placeholder para imagen 3D - aquí puedes agregar un Canvas con el modelo */}
-              <div className="w-full h-full flex items-center justify-center">
-                <motion.div
-                  className="text-8xl"
-                  animate={{
-                    rotate: [0, 360],
-                    scale: [1, 1.1, 1],
-                  }}
-                  transition={{
-                    duration: 20,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                >
-                  {phase.icon}
-                </motion.div>
-              </div>
+              <motion.div
+                className="text-8xl"
+                animate={{
+                  rotate: [0, 360],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+              >
+                {phase.icon}
+              </motion.div>
             </div>
           </div>
 
@@ -178,94 +177,152 @@ function PhaseCard({ phase, isActive }: { phase: ProcessPhase; isActive: boolean
             </motion.div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 }
 
 export default function ProcesoGarra() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const horizontalContainerRef = useRef<HTMLDivElement>(null);
   const [currentPhase, setCurrentPhase] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const isScrollingRef = useRef(false);
 
-  // Scroll horizontal con snap
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
+    if (typeof window === "undefined") return;
 
-    const handleScroll = () => {
-      if (isScrollingRef.current) return;
-      
-      const scrollLeft = container.scrollLeft;
-      const cardWidth = container.scrollWidth / phases.length;
-      const phase = Math.round(scrollLeft / cardWidth);
-      const clampedPhase = Math.max(0, Math.min(phase, phases.length - 1));
-      
-      setCurrentPhase((prev) => {
-        if (prev !== clampedPhase) {
-          return clampedPhase;
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = sectionRef.current;
+    const horizontalContainer = horizontalContainerRef.current;
+
+    if (!section || !horizontalContainer) return;
+
+    let scrollTrigger: ScrollTrigger | null = null;
+    let animation: gsap.core.Tween | null = null;
+
+    const initScrollTrigger = () => {
+      // Limpiar instancias anteriores
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars.trigger === section) {
+          trigger.kill();
         }
-        return prev;
       });
-    };
 
-    // Detectar scroll inicial
-    handleScroll();
-
-    container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => container.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Navegación con flechas
-  const goToPhase = useCallback((direction: "prev" | "next") => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    isScrollingRef.current = true;
-    const cardWidth = container.scrollWidth / phases.length;
-    
-    setCurrentPhase((prev) => {
-      const newPhase =
-        direction === "next"
-          ? Math.min(prev + 1, phases.length - 1)
-          : Math.max(prev - 1, 0);
+      // Obtener el ancho del viewport
+      const viewportWidth = window.innerWidth;
       
-      container.scrollTo({
-        left: newPhase * cardWidth,
-        behavior: "smooth",
-      });
+      // Asegurar que el contenedor tenga el ancho correcto
+      horizontalContainer.style.width = `${phases.length * 100}vw`;
       
-      return newPhase;
-    });
+      // Forzar reflow para que el navegador calcule el ancho correcto
+      void horizontalContainer.offsetWidth;
+      
+      // Calcular el ancho total: cada fase ocupa 100vw
+      const totalWidth = phases.length * viewportWidth;
+      
+      // La distancia de scroll es el ancho total menos el viewport
+      const scrollDistance = totalWidth - viewportWidth;
 
-    setTimeout(() => {
-      isScrollingRef.current = false;
-    }, 500);
-  }, []);
-
-  // Navegación con teclado
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      // Solo navegar si no estamos escribiendo en un input
-      if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement
-      ) {
+      // Crear el wrapper para el pin
+      const pinWrapper = section.querySelector('.pin-wrapper') as HTMLElement;
+      if (!pinWrapper) {
+        console.error("No se encontró el pin-wrapper");
         return;
       }
 
-      if (e.key === "ArrowLeft") goToPhase("prev");
-      if (e.key === "ArrowRight") goToPhase("next");
+      // Resetear posición del contenedor y asegurar que esté visible
+      gsap.set(horizontalContainer, { 
+        x: 0,
+        clearProps: "transform"
+      });
+
+      // Crear la animación horizontal
+      animation = gsap.to(horizontalContainer, {
+        x: -scrollDistance,
+        ease: "none",
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: `+=${scrollDistance}`,
+          pin: pinWrapper,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          onStart: () => {
+            console.log("ScrollTrigger iniciado");
+          },
+          onUpdate: (self) => {
+            const progress = self.progress;
+            const phaseIndex = Math.min(
+              Math.floor(progress * phases.length),
+              phases.length - 1
+            );
+            setCurrentPhase(phaseIndex);
+            // Log temporal para debug
+            if (Math.floor(progress * 100) % 25 === 0) {
+              console.log(`Progress: ${(progress * 100).toFixed(0)}%, Phase: ${phaseIndex}, X: ${horizontalContainer.style.transform || gsap.getProperty(horizontalContainer, "x")}`);
+            }
+          },
+          onEnter: () => {
+            console.log("Entrando en la sección");
+          },
+          onLeave: () => {
+            console.log("Saliendo de la sección");
+          },
+        },
+      });
+
+      // Guardar referencia al scrollTrigger
+      scrollTrigger = animation.scrollTrigger;
+      
+      console.log("Animación creada:", animation);
+      console.log("ScrollTrigger creado:", scrollTrigger);
+
+      // Manejar resize
+      const handleResize = () => {
+        ScrollTrigger.refresh();
+      };
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
     };
 
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [goToPhase]);
+    // Esperar a que el DOM esté listo
+    const timeoutId = setTimeout(() => {
+      initScrollTrigger();
+    }, 500);
+
+    // También inicializar cuando la página carga completamente
+    if (document.readyState === "complete") {
+      clearTimeout(timeoutId);
+      initScrollTrigger();
+    } else {
+      window.addEventListener("load", () => {
+        clearTimeout(timeoutId);
+        initScrollTrigger();
+      });
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (scrollTrigger) scrollTrigger.kill();
+      if (animation) animation.kill();
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars.trigger === section) {
+          trigger.kill();
+        }
+      });
+    };
+  }, []);
 
   return (
     <section
+      ref={sectionRef}
       id="proceso"
-      className="relative min-h-screen w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 py-20 px-6 md:px-12 lg:px-20 overflow-hidden"
+      className="relative w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
+      style={{ minHeight: "200vh" }}
     >
       {/* Efectos de fondo */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -287,15 +344,16 @@ export default function ProcesoGarra() {
         />
       </div>
 
-      <div className="relative z-10">
-        {/* Título principal */}
-        <div className="mb-12 text-center">
+      {/* Contenedor principal con altura fija para el pin */}
+      <div className="pin-wrapper relative z-10 w-full" style={{ height: "100vh" }}>
+        {/* Título principal - fuera del contenedor horizontal */}
+        <div className="absolute top-2 left-0 right-0 z-10 text-center px-6 pointer-events-none">
           <motion.h2
             initial={{ opacity: 0, y: -30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4"
+            className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2"
             style={{
               textShadow: `
                 0 0 20px rgba(6, 182, 212, 0.5),
@@ -310,7 +368,7 @@ export default function ProcesoGarra() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-cyan-400 text-lg md:text-xl max-w-3xl mx-auto"
+            className="text-cyan-400 text-sm md:text-base max-w-3xl mx-auto"
           >
             Un viaje interactivo a través de las cinco fases clave de nuestro
             proyecto de ingeniería, desde la idea inicial hasta el modelo final
@@ -318,78 +376,28 @@ export default function ProcesoGarra() {
           </motion.p>
         </div>
 
-        {/* Contenedor de scroll horizontal */}
-        <div className="relative">
-          {/* Botones de navegación */}
-          <motion.button
-            onClick={() => goToPhase("prev")}
-            disabled={currentPhase === 0}
-            className={`absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm border-2 border-cyan-500/50 text-cyan-400 flex items-center justify-center transition-all ${
-              currentPhase === 0
-                ? "opacity-30 cursor-not-allowed"
-                : "opacity-100 hover:bg-cyan-500/20 hover:scale-110"
-            }`}
-            whileHover={{ scale: currentPhase === 0 ? 1 : 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M15 18L9 12L15 6" />
-            </svg>
-          </motion.button>
-
-          <motion.button
-            onClick={() => goToPhase("next")}
-            disabled={currentPhase === phases.length - 1}
-            className={`absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm border-2 border-cyan-500/50 text-cyan-400 flex items-center justify-center transition-all ${
-              currentPhase === phases.length - 1
-                ? "opacity-30 cursor-not-allowed"
-                : "opacity-100 hover:bg-cyan-500/20 hover:scale-110"
-            }`}
-            whileHover={{ scale: currentPhase === phases.length - 1 ? 1 : 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M9 18L15 12L9 6" />
-            </svg>
-          </motion.button>
-
-          {/* Scroll container */}
-          <div
-            ref={scrollContainerRef}
-            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-            style={{
-              scrollSnapType: "x mandatory",
-              scrollBehavior: "smooth",
-            }}
-          >
-            {phases.map((phase, index) => (
-              <div
-                key={phase.id}
-                className="flex-shrink-0 w-full snap-center"
-                style={{ scrollSnapAlign: "start" }}
-              >
-                <PhaseCard phase={phase} isActive={index === currentPhase} />
-              </div>
-            ))}
-          </div>
+        {/* Contenedor horizontal que se mueve con el scroll vertical */}
+        <div
+          ref={horizontalContainerRef}
+          className="flex flex-row items-center h-full relative z-20"
+          style={{
+            willChange: "transform",
+            width: `${phases.length * 100}vw`,
+            height: "100vh",
+            position: "relative",
+          }}
+        >
+          {phases.map((phase, index) => (
+            <PhaseCard
+              key={phase.id}
+              phase={phase}
+              isActive={index === currentPhase}
+            />
+          ))}
         </div>
 
-        {/* Timeline y controles */}
-        <div className="mt-12">
+        {/* Timeline y controles - fijos en la parte inferior */}
+        <div className="absolute bottom-8 left-0 right-0 z-30 px-6 pointer-events-auto">
           {/* Timeline */}
           <div className="relative max-w-4xl mx-auto">
             {/* Línea de progreso */}
@@ -400,28 +408,16 @@ export default function ProcesoGarra() {
                 animate={{
                   width: `${((currentPhase + 1) / phases.length) * 100}%`,
                 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.3 }}
               />
             </div>
 
             {/* Puntos de fase */}
             <div className="flex justify-between mt-4">
               {phases.map((phase, index) => (
-                <motion.button
+                <div
                   key={phase.id}
-                  onClick={() => {
-                    const container = scrollContainerRef.current;
-                    if (container) {
-                      const cardWidth = container.scrollWidth / phases.length;
-                      container.scrollTo({
-                        left: index * cardWidth,
-                        behavior: "smooth",
-                      });
-                    }
-                  }}
-                  className="flex flex-col items-center gap-2 group"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
+                  className="flex flex-col items-center gap-2"
                 >
                   <motion.div
                     className={`w-4 h-4 rounded-full border-2 transition-all ${
@@ -446,7 +442,7 @@ export default function ProcesoGarra() {
                   >
                     {phase.name}
                   </span>
-                </motion.button>
+                </div>
               ))}
             </div>
           </div>
@@ -456,7 +452,7 @@ export default function ProcesoGarra() {
             key={currentPhase}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 text-center"
+            className="mt-6 text-center"
           >
             <p className="text-white/60 text-sm md:text-base">
               PASO {currentPhase + 1} DE {phases.length}
@@ -467,4 +463,3 @@ export default function ProcesoGarra() {
     </section>
   );
 }
-
