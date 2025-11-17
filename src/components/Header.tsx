@@ -1,15 +1,36 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const navItems = [
-    { name: 'Anatomía', href: '#anatomia' },
-    { name: 'Funcionamiento', href: '#funcionamiento' },
-    { name: 'Especificaciones', href: '#especificaciones' },
-    { name: 'Proceso', href: '#proceso' },
+    { name: "Anatomía", href: "#anatomia" },
+    { name: "Funcionamiento", href: "#funcionamiento" },
+    { name: "Especificaciones", href: "#especificaciones" },
+    { name: "Proceso", href: "#proceso" },
   ];
 
+  // Calcular la opacidad del fondo basada en el scroll
+  const backgroundOpacity = Math.min(scrollY / 30, 1);
+
+  // Calcular la opacidad del borde basada en el scroll
+  const borderOpacity = Math.min(scrollY / 30, 1);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-sm border-b border-cyan-500/20">
+    <motion.header
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-colors duration-300"
+      style={{
+        backgroundColor: `rgba(0, 0, 0, ${backgroundOpacity * 0.8})`,
+        borderBottom: `1px solid rgba(6, 182, 212, ${borderOpacity * 0.2})`,
+      }}
+    >
       <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <motion.div
@@ -55,7 +76,9 @@ export default function Header() {
             />
             <circle cx="12" cy="18" r="2" fill="currentColor" />
           </svg>
-          <span className="text-white font-semibold text-lg">GARRA MECÁNICA</span>
+          <span className="text-white font-semibold text-lg">
+            GARRA MECÁNICA
+          </span>
         </motion.div>
 
         {/* Navigation */}
@@ -84,7 +107,6 @@ export default function Header() {
           Descargar
         </motion.button>
       </div>
-    </header>
+    </motion.header>
   );
 }
-

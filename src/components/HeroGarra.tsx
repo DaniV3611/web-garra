@@ -217,13 +217,13 @@ export default function HeroGarra() {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="text-white/80 text-base md:text-lg lg:text-xl text-left"
           >
-            Diseño de Ingeniería 3D | Autodesk Fusion 360
+            Diseño 3D | Autodesk Fusion 360
           </motion.p>
         </div>
 
         {/* Columna derecha: Modelo 3D */}
-        <div className="flex-1 w-full md:w-1/2 h-full relative">
-          <div className="w-full h-full bg-linear-to-b from-slate-900/50 via-slate-800/30 to-slate-900/50">
+        <div className="flex-1 w-full md:w-1/2 h-5/6 relative">
+          <div className="w-full h-full bg-transparent">
             <Canvas
               camera={{ position: [0, 1, 5], fov: 50 }}
               gl={{ antialias: true, alpha: true }}
