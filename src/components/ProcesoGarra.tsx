@@ -23,7 +23,8 @@ const phases: ProcessPhase[] = [
     date: "ENERO 2024",
     description:
       "La idea inicial toma forma a través de bocetos y diagramas conceptuales. Se definen los requisitos funcionales, dimensiones y objetivos del proyecto.",
-    tools: "Herramientas Utilizadas: Sketching, Brainstorming, Diseño Conceptual",
+    tools:
+      "Herramientas Utilizadas: Sketching, Brainstorming, Diseño Conceptual",
     gradient: "from-purple-600 via-purple-500 to-pink-500",
     glowColor: "rgba(168, 85, 247, 0.4)",
     icon: "💡",
@@ -47,7 +48,8 @@ const phases: ProcessPhase[] = [
     date: "MARZO 2024",
     description:
       "Se realizan simulaciones de movimiento, análisis de fuerzas y pruebas de resistencia para validar el diseño antes de la fabricación.",
-    tools: "Herramientas Utilizadas: Autodesk Fusion 360 Simulation, Análisis FEA",
+    tools:
+      "Herramientas Utilizadas: Autodesk Fusion 360 Simulation, Análisis FEA",
     gradient: "from-emerald-600 via-teal-500 to-green-400",
     glowColor: "rgba(16, 185, 129, 0.4)",
     icon: "⚙️",
@@ -71,21 +73,29 @@ const phases: ProcessPhase[] = [
     date: "MAYO 2024",
     description:
       "El diseño final renderizado con materiales y texturas realistas. Documentación completa del proyecto lista para fabricación o presentación.",
-    tools: "Herramientas Utilizadas: Autodesk Fusion 360 Rendering, Documentación Técnica",
+    tools:
+      "Herramientas Utilizadas: Autodesk Fusion 360 Rendering, Documentación Técnica",
     gradient: "from-rose-600 via-pink-500 to-red-400",
     glowColor: "rgba(225, 29, 72, 0.4)",
     icon: "✨",
   },
 ];
 
-function PhaseCard({ phase, isActive }: { phase: ProcessPhase; isActive: boolean }) {
+function PhaseCard({
+  phase,
+  isActive,
+}: {
+  phase: ProcessPhase;
+  isActive: boolean;
+}) {
   return (
     <div
-      className="flex-shrink-0 w-screen h-full flex items-center justify-center px-4 md:px-8"
+      className="shrink-0 w-screen h-full flex items-center justify-center px-4 md:px-8"
       style={{ minWidth: "100vw" }}
     >
+      {/* TODO: Usar relaciones relativas y no valores absolutos */}
       <motion.div
-        className={`relative w-full max-w-6xl h-[80vh] bg-gradient-to-br ${phase.gradient} rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl`}
+        className={`relative top-32 w-full max-w-6xl h-[50vh] bg-linear-to-br ${phase.gradient} rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl`}
         style={{
           boxShadow: isActive
             ? `0 0 60px ${phase.glowColor}, inset 0 0 60px rgba(255, 255, 255, 0.1)`
@@ -173,7 +183,9 @@ function PhaseCard({ phase, isActive }: { phase: ProcessPhase; isActive: boolean
               transition={{ delay: 0.5 }}
               className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20"
             >
-              <p className="text-white/80 text-sm md:text-base">{phase.tools}</p>
+              <p className="text-white/80 text-sm md:text-base">
+                {phase.tools}
+              </p>
             </motion.div>
           </div>
         </div>
@@ -210,30 +222,30 @@ export default function ProcesoGarra() {
 
       // Obtener el ancho del viewport
       const viewportWidth = window.innerWidth;
-      
+
       // Asegurar que el contenedor tenga el ancho correcto
       horizontalContainer.style.width = `${phases.length * 100}vw`;
-      
+
       // Forzar reflow para que el navegador calcule el ancho correcto
       void horizontalContainer.offsetWidth;
-      
+
       // Calcular el ancho total: cada fase ocupa 100vw
       const totalWidth = phases.length * viewportWidth;
-      
+
       // La distancia de scroll es el ancho total menos el viewport
       const scrollDistance = totalWidth - viewportWidth;
 
       // Crear el wrapper para el pin
-      const pinWrapper = section.querySelector('.pin-wrapper') as HTMLElement;
+      const pinWrapper = section.querySelector(".pin-wrapper") as HTMLElement;
       if (!pinWrapper) {
         console.error("No se encontró el pin-wrapper");
         return;
       }
 
       // Resetear posición del contenedor y asegurar que esté visible
-      gsap.set(horizontalContainer, { 
+      gsap.set(horizontalContainer, {
         x: 0,
-        clearProps: "transform"
+        clearProps: "transform",
       });
 
       // Crear la animación horizontal
@@ -260,7 +272,14 @@ export default function ProcesoGarra() {
             setCurrentPhase(phaseIndex);
             // Log temporal para debug
             if (Math.floor(progress * 100) % 25 === 0) {
-              console.log(`Progress: ${(progress * 100).toFixed(0)}%, Phase: ${phaseIndex}, X: ${horizontalContainer.style.transform || gsap.getProperty(horizontalContainer, "x")}`);
+              console.log(
+                `Progress: ${(progress * 100).toFixed(
+                  0
+                )}%, Phase: ${phaseIndex}, X: ${
+                  horizontalContainer.style.transform ||
+                  gsap.getProperty(horizontalContainer, "x")
+                }`
+              );
             }
           },
           onEnter: () => {
@@ -274,7 +293,7 @@ export default function ProcesoGarra() {
 
       // Guardar referencia al scrollTrigger
       scrollTrigger = animation.scrollTrigger;
-      
+
       console.log("Animación creada:", animation);
       console.log("ScrollTrigger creado:", scrollTrigger);
 
@@ -321,7 +340,7 @@ export default function ProcesoGarra() {
     <section
       ref={sectionRef}
       id="proceso"
-      className="relative w-full bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950"
+      className="relative w-full bg-linear-to-b from-slate-950 via-slate-900 to-slate-950"
       style={{ minHeight: "200vh" }}
     >
       {/* Efectos de fondo */}
@@ -345,9 +364,12 @@ export default function ProcesoGarra() {
       </div>
 
       {/* Contenedor principal con altura fija para el pin */}
-      <div className="pin-wrapper relative z-10 w-full" style={{ height: "100vh" }}>
+      <div
+        className="pin-wrapper relative z-10 w-full"
+        style={{ height: "100vh" }}
+      >
         {/* Título principal - fuera del contenedor horizontal */}
-        <div className="absolute top-2 left-0 right-0 z-10 text-center px-6 pointer-events-none">
+        <div className="absolute top-20 left-0 right-0 z-10 text-center px-6 pointer-events-none">
           <motion.h2
             initial={{ opacity: 0, y: -30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -383,7 +405,7 @@ export default function ProcesoGarra() {
           style={{
             willChange: "transform",
             width: `${phases.length * 100}vw`,
-            height: "100vh",
+            height: "70vh",
             position: "relative",
           }}
         >
@@ -403,7 +425,7 @@ export default function ProcesoGarra() {
             {/* Línea de progreso */}
             <div className="relative h-1 bg-slate-700/50 rounded-full overflow-hidden">
               <motion.div
-                className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"
+                className="absolute top-0 left-0 h-full bg-linear-to-r from-cyan-500 to-blue-500 rounded-full"
                 initial={{ width: "0%" }}
                 animate={{
                   width: `${((currentPhase + 1) / phases.length) * 100}%`,
@@ -435,9 +457,7 @@ export default function ProcesoGarra() {
                   />
                   <span
                     className={`text-xs md:text-sm font-medium transition-colors ${
-                      index <= currentPhase
-                        ? "text-cyan-400"
-                        : "text-slate-500"
+                      index <= currentPhase ? "text-cyan-400" : "text-slate-500"
                     }`}
                   >
                     {phase.name}
