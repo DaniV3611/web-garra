@@ -58,15 +58,6 @@ export default function FuncionamientoGarra() {
                 <div className="w-4 h-4 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full h-8 w-0.5 bg-linear-to-t from-cyan-500/50 to-transparent" />
               </div>
-              <div className="text-center">
-                <h4 className="text-white font-semibold text-lg mb-1">
-                  {phaseData.title}
-                </h4>
-                <p className="text-cyan-400/80 text-sm mb-1">
-                  {phaseData.parameter}:
-                </p>
-                <p className="text-white font-bold text-xl">{phaseData.value}</p>
-              </div>
             </motion.div>
           ))}
         </div>
@@ -74,4 +65,3 @@ export default function FuncionamientoGarra() {
     </section>
   );
 }
-
