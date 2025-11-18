@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { anatomiaBlocks } from "./anatomia/data";
@@ -8,10 +8,14 @@ import { AnatomiaCard } from "./anatomia/AnatomiaCard";
 export default function AnatomiaGarra() {
   const sectionRef = useRef<HTMLElement>(null);
   const blocksRef = useRef<Array<HTMLDivElement | null>>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  const registerBlock = useCallback((element: HTMLDivElement | null, index: number) => {
-    blocksRef.current[index] = element;
-  }, []);
+  const registerBlock = useCallback(
+    (element: HTMLDivElement | null, index: number) => {
+      blocksRef.current[index] = element;
+    },
+    []
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -20,31 +24,49 @@ export default function AnatomiaGarra() {
 
     if (!sectionRef.current) return;
 
+    const triggers: ScrollTrigger[] = [];
+
     blocksRef.current.forEach((block, index) => {
       if (!block) return;
 
-      gsap.fromTo(
+      const animation = gsap.fromTo(
         block,
-        { opacity: 0, x: 100 },
+        { opacity: 0, y: 50 },
         {
           opacity: 1,
-          x: 0,
+          y: 0,
           duration: 0.8,
-          delay: index * 0.2,
           scrollTrigger: {
             trigger: block,
-            start: "top 80%",
-            end: "top 50%",
-            scrub: 1,
+            start: "top 85%",
+            end: "bottom 60%",
+            onEnter: () => setActiveIndex(index),
+            onEnterBack: () => setActiveIndex(index),
           },
         }
       );
+
+      if (animation.scrollTrigger) {
+        triggers.push(animation.scrollTrigger);
+      }
+
+      const syncTrigger = ScrollTrigger.create({
+        trigger: block,
+        start: "top center",
+        end: "bottom center",
+        onEnter: () => setActiveIndex(index),
+        onEnterBack: () => setActiveIndex(index),
+      });
+
+      triggers.push(syncTrigger);
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      triggers.forEach((trigger) => trigger.kill());
     };
   }, []);
+
+  const activeBlock = anatomiaBlocks[activeIndex] ?? anatomiaBlocks[0];
 
   return (
     <section
@@ -59,7 +81,7 @@ export default function AnatomiaGarra() {
         backgroundSize: "50px 50px",
       }}
     >
-      <div className="mb-12 md:mb-16">
+      <div className="mb-12 md:mb-16 max-w-4xl">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -80,66 +102,87 @@ export default function AnatomiaGarra() {
         </motion.p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+      <div className="flex flex-col lg:flex-row gap-12">
         <div className="flex-1 lg:w-1/2">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="relative bg-slate-900/50 rounded-lg border border-cyan-500/30 p-8"
-          >
-            <div className="aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg flex items-center justify-center border-2 border-dashed border-cyan-500/30">
-              <div className="text-center">
-                <svg
-                  className="w-24 h-24 mx-auto mb-4 text-cyan-400/50"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+          <div className="sticky top-28">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              className="relative bg-slate-900/50 rounded-2xl border border-cyan-500/30 p-6 overflow-hidden"
+            >
+              <div
+                className="absolute inset-0 opacity-5"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+                  `,
+                  backgroundSize: "30px 30px",
+                }}
+              />
+
+              <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-900/80 border border-cyan-500/20">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={activeBlock.number}
+                    src={activeBlock.image}
+                    alt={activeBlock.title}
+                    loading="lazy"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="w-full h-full object-cover"
                   />
-                </svg>
-                <p className="text-cyan-400/50 text-sm">Vista Explosionada 3D</p>
-              </div>
-            </div>
+                </AnimatePresence>
 
-            <div className="absolute top-4 left-4 text-cyan-400 text-xs font-mono">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-16 h-0.5 bg-cyan-400/50 border-dashed border-t border-cyan-400"></div>
-                <span>150mm</span>
+                <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6">
+                  <div className="flex items-center justify-between text-xs font-mono text-cyan-200/80">
+                    <span>ANATOMÍA</span>
+                    <span>{activeBlock.number}</span>
+                  </div>
+                  <div>
+                    <p className="text-cyan-400 text-3xl font-bold">
+                      {activeBlock.title}
+                    </p>
+                    <p className="text-white/70 mt-2 text-sm max-w-xs">
+                      {activeBlock.description}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col items-start gap-2">
-                <div className="w-0.5 h-16 bg-cyan-400/50 border-dashed border-l border-cyan-400"></div>
-                <span className="-ml-2">Ø25mm</span>
-              </div>
-            </div>
 
-            <div className="absolute bottom-4 left-4 text-cyan-400/70 text-xs font-mono">
-              <div className="flex gap-4">
-                <span>X</span>
-                <span>Y</span>
-                <span>Z</span>
+              <div className="mt-6 grid grid-cols-3 gap-4">
+                {["Precisión ±0.1mm", "Material: Al 6061", "Peso 250g"].map(
+                  (item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-slate-900/70 border border-cyan-500/20 rounded-lg p-3 text-center text-xs text-white/70"
+                    >
+                      {item}
+                    </div>
+                  )
+                )}
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
 
         <div className="flex-1 lg:w-1/2 flex flex-col gap-6">
-          {anatomiaBlocks.map((block, index) => (
-            <AnatomiaCard
-              key={block.number}
-              block={block}
-              ref={(element) => registerBlock(element, index)}
-            />
-          ))}
+          {anatomiaBlocks.map((block, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <AnatomiaCard
+                key={block.number}
+                block={block}
+                isActive={isActive}
+                ref={(element) => registerBlock(element, index)}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
   );
 }
-
