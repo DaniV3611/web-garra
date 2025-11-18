@@ -102,9 +102,9 @@ export default function AnatomiaGarra() {
         </motion.p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-12">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
         <div className="flex-1 lg:w-1/2">
-          <div className="sticky top-28">
+          <div className="sticky top-6 md:top-20">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -173,12 +173,13 @@ export default function AnatomiaGarra() {
           {anatomiaBlocks.map((block, index) => {
             const isActive = index === activeIndex;
             return (
-              <AnatomiaCard
+              <div
                 key={block.number}
-                block={block}
-                isActive={isActive}
                 ref={(element) => registerBlock(element, index)}
-              />
+                className="min-h-[75vh] flex items-center"
+              >
+                <AnatomiaCard block={block} isActive={isActive} />
+              </div>
             );
           })}
         </div>
