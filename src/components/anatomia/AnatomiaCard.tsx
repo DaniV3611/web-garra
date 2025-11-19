@@ -22,7 +22,7 @@ export const AnatomiaCard = forwardRef<HTMLDivElement, AnatomiaCardProps>(
       }`}
     >
       <div className="flex items-start gap-4">
-        <div className="flex-shrink-0">
+        <div className="shrink-0">
           <span
             className={`text-5xl md:text-6xl font-bold transition-colors ${
               isActive ? "text-cyan-300" : "text-cyan-500"

@@ -122,7 +122,7 @@ export default function AnatomiaGarra() {
                 }}
               />
 
-              <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-900/80 border border-cyan-500/20">
+              <div className="relative aspect-square rounded-xl overflow-hidden bg-slate-900/80 border border-cyan-500/20 flex items-center justify-center">
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={activeBlock.number}
@@ -133,11 +133,11 @@ export default function AnatomiaGarra() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5 }}
-                    className="w-full h-full object-cover"
+                    className="max-w-full max-h-full object-contain"
                   />
                 </AnimatePresence>
 
-                <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6">
+                <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 bg-linear-to-b from-transparent from-60% to-slate-900 z-50">
                   <div className="flex items-center justify-between text-xs font-mono text-cyan-200/80">
                     <span>ANATOMÍA</span>
                     <span>{activeBlock.number}</span>
@@ -146,24 +146,19 @@ export default function AnatomiaGarra() {
                     <p className="text-cyan-400 text-3xl font-bold">
                       {activeBlock.title}
                     </p>
-                    <p className="text-white/70 mt-2 text-sm max-w-xs">
-                      {activeBlock.description}
-                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-3 gap-4">
-                {["Precisión ±0.1mm", "Material: Al 6061", "Peso 250g"].map(
-                  (item, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-slate-900/70 border border-cyan-500/20 rounded-lg p-3 text-center text-xs text-white/70"
-                    >
-                      {item}
-                    </div>
-                  )
-                )}
+              <div className="mt-6 grid grid-cols-2 gap-4">
+                {["Material: ABS", "Peso 250g"].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-slate-900/70 border border-cyan-500/20 rounded-lg p-3 text-center text-xs text-white/70"
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
             </motion.div>
           </div>
