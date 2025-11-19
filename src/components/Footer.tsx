@@ -6,13 +6,15 @@ export default function Footer() {
   const handleDownloadPDF = () => {
     // Placeholder para descargar PDF de especificaciones
     // En producción, aquí iría la lógica para descargar el PDF
-    alert("Descarga de especificaciones PDF - Funcionalidad próximamente disponible");
+    alert(
+      "Descarga de especificaciones PDF - Funcionalidad próximamente disponible"
+    );
   };
 
   return (
     <footer className="relative w-full bg-slate-950 border-t border-cyan-500/20">
       {/* Efecto de gradiente superior */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-cyan-500 to-transparent opacity-50" />
 
       <div className="container mx-auto px-6 md:px-12 lg:px-20 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8">
@@ -64,11 +66,12 @@ export default function Footer() {
               <h3 className="text-xl font-bold text-white">GARRA MECÁNICA</h3>
             </div>
             <p className="text-white/70 text-sm leading-relaxed mb-4">
-              Proyecto de diseño e ingeniería 3D desarrollado como parte del curso de Diseño 3D.
-              Modelo completo diseñado y renderizado en Autodesk Fusion 360.
+              Proyecto de diseño 3D. Modelo completo diseñado y renderizado en
+              Autodesk Fusion 360.
             </p>
             <p className="text-white/50 text-xs">
-              © {currentYear} Proyecto Garra Mecánica. Todos los derechos reservados.
+              © {currentYear} Proyecto Garra Mecánica. Todos los derechos
+              reservados.
             </p>
           </motion.div>
 
@@ -85,7 +88,7 @@ export default function Footer() {
             <div className="space-y-3">
               {/* Logo Autodesk Fusion 360 */}
               <div className="flex items-center gap-3 group">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="w-10 h-10 bg-linear-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                   <svg
                     width="24"
                     height="24"
@@ -93,10 +96,7 @@ export default function Footer() {
                     fill="none"
                     className="text-white"
                   >
-                    <path
-                      d="M12 2L2 7L12 12L22 7L12 2Z"
-                      fill="currentColor"
-                    />
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor" />
                     <path
                       d="M2 17L12 22L22 17M2 12L12 17L22 12"
                       stroke="currentColor"
@@ -107,7 +107,9 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white font-medium text-sm">Autodesk Fusion 360</p>
+                  <p className="text-white font-medium text-sm">
+                    Autodesk Fusion 360
+                  </p>
                   <p className="text-white/50 text-xs">Modelado 3D</p>
                 </div>
               </div>
@@ -172,7 +174,7 @@ export default function Footer() {
             whileTap={{ scale: 0.95 }}
             viewport={{ once: true }}
             onClick={handleDownloadPDF}
-            className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/20"
+            className="px-6 py-3 bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-lg font-semibold text-sm transition-all duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/20"
           >
             <svg
               width="20"
@@ -188,19 +190,11 @@ export default function Footer() {
               <polyline points="7 10 12 15 17 10" />
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
-            Descargar Especificaciones PDF
+            Descargar Archivos para Impresión 3D
           </motion.button>
 
           {/* Créditos y links */}
           <div className="flex flex-col md:flex-row items-center gap-4 text-white/50 text-xs">
-            <p>Diseñado con</p>
-            <motion.span
-              whileHover={{ scale: 1.1 }}
-              className="text-cyan-400 font-semibold"
-            >
-              ❤️
-            </motion.span>
-            <p>por el equipo de diseño</p>
             <div className="flex items-center gap-2">
               <span>•</span>
               <a
@@ -214,9 +208,8 @@ export default function Footer() {
         </div>
 
         {/* Efecto de partículas decorativas en la parte inferior */}
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
       </div>
     </footer>
   );
 }
-

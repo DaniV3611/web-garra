@@ -8,70 +8,75 @@ export interface ProcessPhase {
   gradient: string;
   glowColor: string;
   icon: string;
+  image: string;
 }
 
 export const phases: ProcessPhase[] = [
   {
     id: 1,
     name: "Concepto",
-    title: "Conceptualización",
+    title: "De la Idea al Papel",
     date: "ENERO 2024",
     description:
-      "La idea inicial toma forma a través de bocetos y diagramas conceptuales. Se definen los requisitos funcionales, dimensiones y objetivos del proyecto.",
-    tools: "Herramientas Utilizadas: Sketching, Brainstorming, Diseño Conceptual",
+      "Todo comenzó con una pregunta: ¿cómo crear una garra funcional? Exploramos diseños existentes y bocetamos ideas, definiendo lo esencial: una garra con movimiento de apertura y cierre, ligera y fácil de ensamblar. Nuestros primeros dibujos capturaron la forma básica y el mecanismo de agarre.",
+    tools:
+      "Herramientas: Bocetos a mano, referencias visuales, diagramas simples",
     gradient: "from-purple-600 via-purple-500 to-pink-500",
     glowColor: "rgba(168, 85, 247, 0.4)",
     icon: "💡",
+    image: "/concepto.png",
   },
   {
     id: 2,
     name: "Modelado",
-    title: "Modelado 3D",
+    title: "Creación Pieza por Pieza",
     date: "FEBRERO 2024",
     description:
-      "La conceptualización toma forma digital utilizando Autodesk Fusion 360. Cada componente fue modelado con precisión para asegurar su funcionalidad y ensamble.",
-    tools: "Herramientas Utilizadas: Autodesk Fusion 360",
+      "El concepto tomó vida digital en Fusion 360. Diseñamos cada componente individualmente: la base de soporte, los dedos articulados, los conectores y el sistema de engranajes. Fue un proceso de prueba y error, ajustando formas y dimensiones hasta que cada pieza encajaba perfectamente con las demás.",
+    tools: "Herramientas: Autodesk Fusion 360, Modelado 3D",
     gradient: "from-cyan-600 via-blue-500 to-cyan-400",
     glowColor: "rgba(6, 182, 212, 0.4)",
     icon: "🎨",
+    image: "/garra.png",
   },
   {
     id: 3,
-    name: "Simulación",
-    title: "Simulación y Análisis",
+    name: "Ensamblaje",
+    title: "Uniendo las Piezas",
     date: "MARZO 2024",
     description:
-      "Se realizan simulaciones de movimiento, análisis de fuerzas y pruebas de resistencia para validar el diseño antes de la fabricación.",
-    tools:
-      "Herramientas Utilizadas: Autodesk Fusion 360 Simulation, Análisis FEA",
+      "Con todas las piezas modeladas, llegó el momento de ensamblarlas virtualmente. Verificamos que los dedos se movieran sin chocar entre sí, que los ejes giraran correctamente y que el mecanismo de apertura y cierre funcionara de manera fluida. Cada ajuste nos acercaba más a un diseño funcional.",
+    tools: "Herramientas: Fusion 360 (ensamblajes), simulación de movimiento",
     gradient: "from-emerald-600 via-teal-500 to-green-400",
     glowColor: "rgba(16, 185, 129, 0.4)",
     icon: "⚙️",
+    image: "/garra.png",
   },
   {
     id: 4,
     name: "Refinamiento",
-    title: "Refinamiento y Optimización",
+    title: "Ajustes y Mejoras",
     date: "ABRIL 2024",
     description:
-      "Iteración continua del diseño basada en los resultados de simulación. Optimización de geometrías, reducción de peso y mejora de la eficiencia.",
-    tools: "Herramientas Utilizadas: Autodesk Fusion 360, Iteración de Diseño",
+      "Después de ver el ensamblaje completo, identificamos áreas de mejora. Reforzamos puntos débiles, simplificamos formas complicadas, redujimos peso innecesario y suavizamos bordes afilados. También verificamos que las piezas fueran imprimibles sin soportes excesivos. El diseño se volvió más elegante y práctico.",
+    tools: "Herramientas: Fusion 360, iteración de diseño, optimización",
     gradient: "from-orange-600 via-amber-500 to-yellow-400",
     glowColor: "rgba(249, 115, 22, 0.4)",
     icon: "🔧",
+    image: "/garra.png",
   },
   {
     id: 5,
-    name: "Final",
-    title: "Modelo Final",
+    name: "Impresión 3D",
+    title: "Impresión 3D y Resultado",
     date: "MAYO 2024",
     description:
-      "El diseño final renderizado con materiales y texturas realistas. Documentación completa del proyecto lista para fabricación o presentación.",
+      "El momento de la verdad: exportamos los archivos e imprimimos cada pieza en 3D. Ver cómo el diseño digital se materializaba capa por capa fue emocionante. Después de algunas horas de impresión, ensamblamos las piezas físicas y la garra cobró vida. El proyecto pasó de ser una idea abstracta a un objeto real y funcional.",
     tools:
-      "Herramientas Utilizadas: Autodesk Fusion 360 Rendering, Documentación Técnica",
+      "Herramientas: Impresora 3D, exportación de archivos STL, ensamblaje físico",
     gradient: "from-rose-600 via-pink-500 to-red-400",
     glowColor: "rgba(225, 29, 72, 0.4)",
     icon: "✨",
+    image: "/garra.png",
   },
 ];
-

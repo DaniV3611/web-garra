@@ -31,27 +31,16 @@ export function PhaseCard({ phase, isActive }: PhaseCardProps) {
         />
 
         <div className="relative z-10 h-full flex flex-col md:flex-row">
-          <div className="w-full md:w-1/2 h-1/2 md:h-full relative bg-black/20 backdrop-blur-sm">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                className="text-8xl"
-                animate={{ rotate: [0, 360], scale: [1, 1.1, 1] }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              >
-                {phase.icon}
-              </motion.div>
-            </div>
+          <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden bg-black/20 backdrop-blur-sm">
+            <img
+              src={phase.image}
+              alt={phase.title}
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
           </div>
 
           <div className="w-full md:w-1/2 h-1/2 md:h-full p-6 md:p-12 flex flex-col justify-between bg-black/30 backdrop-blur-sm">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: isActive ? 1 : 0.7, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-white/60 text-sm md:text-base font-mono mb-4"
-            >
-              {phase.date}
-            </motion.div>
             <motion.h3
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: isActive ? 1 : 0.7, x: 0 }}
@@ -83,4 +72,3 @@ export function PhaseCard({ phase, isActive }: PhaseCardProps) {
     </div>
   );
 }
-
