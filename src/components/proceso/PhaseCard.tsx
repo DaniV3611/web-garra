@@ -8,7 +8,10 @@ interface PhaseCardProps {
 
 export function PhaseCard({ phase, isActive }: PhaseCardProps) {
   return (
-    <div className="shrink-0 w-screen h-full flex items-center justify-center px-4 md:px-8" style={{ minWidth: "100vw" }}>
+    <div
+      className="shrink-0 w-screen h-full flex items-center justify-center px-4 md:px-8"
+      style={{ minWidth: "100vw" }}
+    >
       <motion.div
         className={`relative top-32 w-full max-w-6xl h-[50vh] bg-linear-to-br ${phase.gradient} rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl`}
         style={{
@@ -31,11 +34,11 @@ export function PhaseCard({ phase, isActive }: PhaseCardProps) {
         />
 
         <div className="relative z-10 h-full flex flex-col md:flex-row">
-          <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden bg-black/20 backdrop-blur-sm">
+          <div className="w-full md:w-1/2 h-1/2 md:h-full relative overflow-hidden bg-black/20 backdrop-blur-sm flex items-center justify-center">
             <img
               src={phase.image}
               alt={phase.title}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="w-full h-full object-contain"
               loading="lazy"
             />
           </div>
@@ -64,7 +67,9 @@ export function PhaseCard({ phase, isActive }: PhaseCardProps) {
               transition={{ delay: 0.5 }}
               className="bg-white/10 backdrop-blur-sm rounded-lg p-4 border border-white/20"
             >
-              <p className="text-white/80 text-sm md:text-base">{phase.tools}</p>
+              <p className="text-white/80 text-sm md:text-base">
+                {phase.tools}
+              </p>
             </motion.div>
           </div>
         </div>
