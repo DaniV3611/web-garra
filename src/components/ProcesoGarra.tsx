@@ -21,7 +21,6 @@ export default function ProcesoGarra() {
       ref={sectionRef}
       id="proceso"
       className="relative w-full min-h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950"
-      style={{ scrollMarginTop: "120px" }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -46,7 +45,7 @@ export default function ProcesoGarra() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-2xl md:text-4xl lg:text-5xl font-bold text-white mb-2"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4"
             style={{
               textShadow: `
                 0 0 20px rgba(6, 182, 212, 0.5),
@@ -54,7 +53,7 @@ export default function ProcesoGarra() {
               `,
             }}
           >
-            El Proceso Detrás de la Garra Mecánica
+            EL PROCESO DETRÁS
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: -20 }}

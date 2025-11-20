@@ -88,6 +88,12 @@ export default function AnatomiaGarra() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4"
+          style={{
+            textShadow: `
+              0 0 20px rgba(6, 182, 212, 0.5),
+              0 0 40px rgba(6, 182, 212, 0.3)
+            `,
+          }}
         >
           PROYECTO GARRA MECÁNICA
         </motion.h2>
