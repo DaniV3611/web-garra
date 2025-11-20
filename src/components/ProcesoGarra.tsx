@@ -20,8 +20,8 @@ export default function ProcesoGarra() {
     <section
       ref={sectionRef}
       id="proceso"
-      className="relative w-full bg-linear-to-b from-slate-950 via-slate-900 to-slate-950"
-      style={{ minHeight: "200vh" }}
+      className="relative w-full min-h-screen bg-linear-to-b from-slate-950 via-slate-900 to-slate-950"
+      style={{ scrollMarginTop: "120px" }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -36,7 +36,10 @@ export default function ProcesoGarra() {
         />
       </div>
 
-      <div className="pin-wrapper relative z-10 w-full" style={{ height: "100vh" }}>
+      <div
+        className="pin-wrapper relative z-10 w-full"
+        style={{ height: "100vh" }}
+      >
         <div className="absolute top-20 left-0 right-0 z-10 text-center px-6 pointer-events-none">
           <motion.h2
             initial={{ opacity: 0, y: -30 }}
@@ -61,7 +64,8 @@ export default function ProcesoGarra() {
             className="text-cyan-400 text-sm md:text-base max-w-3xl mx-auto"
           >
             Un viaje interactivo a través de las cinco fases clave de nuestro
-            proyecto de ingeniería, desde la idea inicial hasta el modelo final renderizado en Autodesk Fusion 360.
+            proyecto de ingeniería, desde la idea inicial hasta el modelo final
+            renderizado en Autodesk Fusion 360.
           </motion.p>
         </div>
 
@@ -76,7 +80,11 @@ export default function ProcesoGarra() {
           }}
         >
           {phases.map((phase, index) => (
-            <PhaseCard key={phase.id} phase={phase} isActive={index === currentPhase} />
+            <PhaseCard
+              key={phase.id}
+              phase={phase}
+              isActive={index === currentPhase}
+            />
           ))}
         </div>
 
@@ -86,22 +94,32 @@ export default function ProcesoGarra() {
               <motion.div
                 className="absolute top-0 left-0 h-full bg-linear-to-r from-cyan-500 to-blue-500 rounded-full"
                 initial={{ width: "0%" }}
-                animate={{ width: `${((currentPhase + 1) / phases.length) * 100}%` }}
+                animate={{
+                  width: `${((currentPhase + 1) / phases.length) * 100}%`,
+                }}
                 transition={{ duration: 0.3 }}
               />
             </div>
 
             <div className="flex justify-between mt-4">
               {phases.map((phase, index) => (
-                <div key={phase.id} className="flex flex-col items-center gap-2">
+                <div
+                  key={phase.id}
+                  className="flex flex-col items-center gap-2"
+                >
                   <motion.div
                     className={`w-4 h-4 rounded-full border-2 transition-all ${
                       index <= currentPhase
                         ? "bg-cyan-500 border-cyan-400 shadow-lg shadow-cyan-500/50"
                         : "bg-slate-700 border-slate-600"
                     }`}
-                    animate={{ scale: index === currentPhase ? [1, 1.3, 1] : 1 }}
-                    transition={{ duration: 2, repeat: index === currentPhase ? Infinity : 0 }}
+                    animate={{
+                      scale: index === currentPhase ? [1, 1.3, 1] : 1,
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: index === currentPhase ? Infinity : 0,
+                    }}
                   />
                   <span
                     className={`text-xs md:text-sm font-medium transition-colors ${
@@ -130,4 +148,3 @@ export default function ProcesoGarra() {
     </section>
   );
 }
-

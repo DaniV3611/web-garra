@@ -9,8 +9,8 @@ export function useHorizontalScroll({
   phaseCount,
   onPhaseChange,
 }: {
-  sectionRef: RefObject<HTMLElement>;
-  horizontalContainerRef: RefObject<HTMLDivElement>;
+  sectionRef: RefObject<HTMLElement | null>;
+  horizontalContainerRef: RefObject<HTMLDivElement | null>;
   phaseCount: number;
   onPhaseChange: (index: number) => void;
 }) {
@@ -38,7 +38,9 @@ export function useHorizontalScroll({
       const totalWidth = phaseCount * viewportWidth;
       const scrollDistance = totalWidth - viewportWidth;
 
-      const pinWrapper = section.querySelector(".pin-wrapper") as HTMLElement | null;
+      const pinWrapper = section.querySelector(
+        ".pin-wrapper"
+      ) as HTMLElement | null;
       if (!pinWrapper) return;
 
       gsap.set(horizontalContainer, { x: 0, clearProps: "transform" });
