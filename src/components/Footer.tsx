@@ -2,6 +2,11 @@ import { motion } from "framer-motion";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const authors = [
+    "Fabián Rincón Suarez",
+    "Nicolás Rodríguez Forero",
+    "Daniel Velasco González",
+  ];
 
   const handleDownloadPDF = () => {
     // Placeholder para descargar PDF de especificaciones
@@ -192,6 +197,23 @@ export default function Footer() {
             </svg>
             Descargar Archivos para Impresión 3D
           </motion.button>
+
+          {/* Créditos de autores */}
+          <div className="text-center md:text-left">
+            <p className="text-cyan-400 text-xs uppercase tracking-[0.3em] mb-2">
+              Hecho por
+            </p>
+            <div className="flex flex-wrap justify-center md:justify-start gap-2">
+              {authors.map((author) => (
+                <span
+                  key={author}
+                  className="px-3 py-1 rounded-full border border-cyan-500/30 bg-white/5 text-white text-xs font-medium backdrop-blur-sm"
+                >
+                  {author}
+                </span>
+              ))}
+            </div>
+          </div>
 
           {/* Créditos y links */}
           <div className="flex flex-col md:flex-row items-center gap-4 text-white/50 text-xs">
