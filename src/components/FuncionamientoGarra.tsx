@@ -37,6 +37,8 @@ export default function FuncionamientoGarra() {
             title={phaseData.title}
             parameter={phaseData.parameter}
             value={phaseData.value}
+            image={phaseData.image}
+            imageAlt={phaseData.imageAlt}
             index={index}
           />
         ))}
