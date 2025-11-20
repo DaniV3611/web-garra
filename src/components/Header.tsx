@@ -23,6 +23,12 @@ export default function Header() {
   // Calcular la opacidad del borde basada en el scroll
   const borderOpacity = Math.min(scrollY / 30, 1);
 
+  const handleDownloadClick = () => {
+    alert(
+      "Descarga de especificaciones PDF - Funcionalidad próximamente disponible"
+    );
+  };
+
   return (
     <motion.header
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-colors duration-300"
@@ -102,9 +108,28 @@ export default function Header() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-white rounded-lg transition-colors duration-300 text-sm font-medium"
+          onClick={handleDownloadClick}
+          className="px-6 py-3 bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-lg font-semibold text-sm transition-colors duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/20"
         >
-          Descargar
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="hidden sm:block"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span className="sm:hidden">Descargar</span>
+          <span className="hidden sm:inline">
+            Descargar Archivos para Impresión 3D
+          </span>
         </motion.button>
       </div>
     </motion.header>
