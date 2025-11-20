@@ -1,4 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+
+html {
+  font-family: "Saira", sans-serif;
+}
 
 /* Estilos personalizados */
 .perspective-1000 {
@@ -55,7 +60,8 @@ body {
 
 /* Animaciones personalizadas */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
