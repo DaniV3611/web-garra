@@ -142,7 +142,7 @@ export default function Footer() {
             <ul className="space-y-2">
               {[
                 { name: "Anatomía", href: "#anatomia" },
-                { name: "Funcionamiento", href: "#funcionamiento" },
+                // { name: "Funcionamiento", href: "#funcionamiento" },
                 { name: "Especificaciones", href: "#especificaciones" },
                 { name: "Proceso", href: "#proceso" },
               ].map((link, index) => (

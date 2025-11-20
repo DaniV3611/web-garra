@@ -13,7 +13,7 @@ export default function Header() {
   const navItems = [
     { name: "Anatomía", href: "#anatomia" },
     { name: "Funcionamiento", href: "#funcionamiento" },
-    { name: "Especificaciones", href: "#especificaciones" },
+    // { name: "Especificaciones", href: "#especificaciones" },
     { name: "Proceso", href: "#proceso" },
   ];
 
