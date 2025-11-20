@@ -37,7 +37,7 @@ export const phases: ProcessPhase[] = [
     gradient: "from-cyan-600 via-blue-500 to-cyan-400",
     glowColor: "rgba(6, 182, 212, 0.4)",
     icon: "🎨",
-    image: "/garra.png",
+    image: "/piezas.png",
   },
   {
     id: 3,
@@ -50,7 +50,7 @@ export const phases: ProcessPhase[] = [
     gradient: "from-emerald-600 via-teal-500 to-green-400",
     glowColor: "rgba(16, 185, 129, 0.4)",
     icon: "⚙️",
-    image: "/garra.png",
+    image: "/cerrando.png",
   },
   {
     id: 4,
