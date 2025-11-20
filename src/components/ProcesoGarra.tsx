@@ -62,9 +62,8 @@ export default function ProcesoGarra() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-cyan-400 text-sm md:text-base max-w-3xl mx-auto"
           >
-            Un viaje interactivo a través de las cinco fases clave de nuestro
-            proyecto de ingeniería, desde la idea inicial hasta el modelo final
-            renderizado en Autodesk Fusion 360.
+            Un viaje interactivo a través de las cuatro fases clave de nuestro
+            proyecto.
           </motion.p>
         </div>
 
