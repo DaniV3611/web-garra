@@ -143,7 +143,7 @@ export default function AnatomiaGarra() {
                   />
                 </AnimatePresence>
 
-                <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 bg-linear-to-b from-transparent from-60% to-slate-900 z-50">
+                <div className="absolute inset-0 pointer-events-none flex flex-col justify-between p-6 bg-gradient-to-b from-transparent from-60% to-slate-900 z-50">
                   <div className="flex items-center justify-between text-xs font-mono text-cyan-200/80">
                     <span>ANATOMÍA</span>
                     <span>{activeBlock.number}</span>
@@ -157,14 +157,12 @@ export default function AnatomiaGarra() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
-                {["Material: ABS", "Peso 250g"].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-slate-900/70 border border-cyan-500/20 rounded-lg p-3 text-center text-xs text-white/70"
-                  >
-                    {item}
-                  </div>
-                ))}
+                <div className="bg-slate-900/70 border border-cyan-500/20 rounded-lg p-3 text-center text-xs text-white/70">
+                  Material: {activeBlock.material}
+                </div>
+                <div className="bg-slate-900/70 border border-cyan-500/20 rounded-lg p-3 text-center text-xs text-white/70">
+                  Peso: {activeBlock.peso}
+                </div>
               </div>
             </motion.div>
           </div>
