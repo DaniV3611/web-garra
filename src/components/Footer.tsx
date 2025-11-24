@@ -8,14 +8,6 @@ export default function Footer() {
     "Daniel Velasco González",
   ];
 
-  const handleDownloadPDF = () => {
-    // Placeholder para descargar PDF de especificaciones
-    // En producción, aquí iría la lógica para descargar el PDF
-    alert(
-      "Descarga de especificaciones PDF - Funcionalidad próximamente disponible"
-    );
-  };
-
   return (
     <footer className="relative w-full bg-slate-950 border-t border-cyan-500/20">
       {/* Efecto de gradiente superior */}
@@ -172,13 +164,15 @@ export default function Footer() {
         {/* Sección inferior: Botón de descarga y créditos */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           {/* Botón de descarga PDF */}
-          <motion.button
+          <motion.a
+            href="https://drive.google.com/file/d/1ys_P-CcY6WnGBc_4a3MHXaGqBFv_kMRE/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             viewport={{ once: true }}
-            onClick={handleDownloadPDF}
             className="px-6 py-3 bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-lg font-semibold text-sm transition-colors duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/20"
           >
             <svg
@@ -196,7 +190,7 @@ export default function Footer() {
               <line x1="12" y1="15" x2="12" y2="3" />
             </svg>
             Descargar Archivos para Autodesk Fusion
-          </motion.button>
+          </motion.a>
 
           {/* Créditos de autores */}
           <div className="text-center md:text-left">

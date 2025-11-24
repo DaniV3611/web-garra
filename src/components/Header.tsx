@@ -23,12 +23,6 @@ export default function Header() {
   // Calcular la opacidad del borde basada en el scroll
   const borderOpacity = Math.min(scrollY / 30, 1);
 
-  const handleDownloadClick = () => {
-    alert(
-      "Descarga de especificaciones PDF - Funcionalidad próximamente disponible"
-    );
-  };
-
   return (
     <motion.header
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm transition-colors duration-300"
@@ -104,11 +98,13 @@ export default function Header() {
         </nav>
 
         {/* Download Button */}
-        <motion.button
+        <motion.a
+          href="https://drive.google.com/file/d/1V-7jhVNMzbN0HSHBkYr-fCW1wdWg5AUu/view?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          onClick={handleDownloadClick}
           className="px-6 py-3 bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-lg font-semibold text-sm transition-colors duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/20"
         >
           <svg
@@ -130,7 +126,7 @@ export default function Header() {
           <span className="hidden sm:inline">
             Descargar Archivos para Impresión 3D
           </span>
-        </motion.button>
+        </motion.a>
       </div>
     </motion.header>
   );
